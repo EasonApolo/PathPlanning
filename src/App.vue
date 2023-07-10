@@ -1,18 +1,23 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <canvas id="canvas" width="2000" height="1500"></canvas>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import { Grid, Astar } from 'fast-astar'
 
 export default {
   name: 'App',
-  components: {
-    HelloWorld
-  }
+  mounted() {
+  },
+  data() {
+    return {
+      a: undefined,
+    }
+  },
+  methods: {
+  },
 }
 </script>
 
@@ -24,5 +29,9 @@ export default {
   text-align: center;
   color: #2c3e50;
   margin-top: 60px;
+}
+#canvas {
+  width: 1000px;
+  height: 750px;
 }
 </style>
