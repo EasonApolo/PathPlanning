@@ -678,14 +678,25 @@ function getBlockByCoord([x, y]) {
   })
 }
 
+function SortedArray(id, w) {
+  this.arr = []
+}
+SortedArray.prototype.push = function() {
+  
+}
+
 // https://www.zhihu.com/tardis/zm/art/40338107?source_id=1003
 function dijkstra(start, end) {
-  const V = {}
-  const U = {}
+  const V = {}  // visited
+  const U = {}  // unvisited
+  V[start.id] = 0
   for (let { id, w } of start.adj) {
     V[id] = w
+    U[id] = w
   }
-  while(true) {
+  let cur
+  while(cur !== end) {
+    cur = Object.entries(U).find(([id, w]) => )
     id = U.find()
     for (let { id, w } of graph[id]) {
 
