@@ -1,3 +1,5 @@
+/* eslint-disable no-unreachable */
+/* eslint-disable no-constant-condition */
 /* eslint-disable no-undef */
 import Vue from 'vue'
 import App from './App.vue'
@@ -629,6 +631,7 @@ function buildGraph() {
   }
   Object.entries(graph).forEach(([id, block]) => {
     const { x1, x2, y1, y2 } = block
+    let adj_id
     if (x1 - 2 > -1 && grid[y1][x1 - 1] === -1 && (adj_id = grid[y1][x1 - 2]) < -1) {
       block.adj.push({ id: adj_id, w: getW(block, graph[adj_id], true) })
     }
@@ -654,14 +657,14 @@ const draw = () => {
     for (let j = 0; j < m; j++) {
       if (grid[i][j] <= 0) {
         ctx.strokeRect(j * s, i * s, s, s)
-        // } else if (grid[i][j] === -1) {
-        //   ctx.fillStyle = '#dde'
-        //   ctx.fillRect(j * s, i * s, s, s)
-        //   ctx.fillStyle = '#eee'
-        // } else if (grid[i][j] < -1) {
-        //   ctx.fillStyle = '#aae'
-        //   ctx.fillRect(j * s, i * s, s, s)
-        //   ctx.fillStyle = '#eee'
+      // } else if (grid[i][j] === -1) {
+      //   ctx.fillStyle = '#dde'
+      //   ctx.fillRect(j * s, i * s, s, s)
+      //   ctx.fillStyle = '#eee'
+      // } else if (grid[i][j] < -1) {
+      //   ctx.fillStyle = '#aae'
+      //   ctx.fillRect(j * s, i * s, s, s)
+      //   ctx.fillStyle = '#eee'
       } else if (grid[i][j] > 0) {
         ctx.fillRect(j * s, i * s, s, s)
       }
@@ -678,60 +681,70 @@ function getBlockByCoord([x, y]) {
   })
 }
 
-function SortedArray(id, w) {
-  this.arr = []
-}
-SortedArray.prototype.push = function() {
-  
-}
-
 // https://www.zhihu.com/tardis/zm/art/40338107?source_id=1003
 function dijkstra(start, end) {
-  const V = {}  // visited
-  const U = {}  // unvisited
-  V[start.id] = 0
-  for (let { id, w } of start.adj) {
-    V[id] = w
-    U[id] = w
-  }
-  let cur
-  while(cur !== end) {
-    cur = Object.entries(U).find(([id, w]) => )
-    id = U.find()
-    for (let { id, w } of graph[id]) {
-
+  const V = new Set()  // visited
+  const U = new Set()  // unvisited
+  const path = {}
+  const pathInfo = {}
+  Object.values(graph).forEach(node => {
+    if (node === start) {
+      V.add(node.id)
+      pathInfo[node.id] = [node.id]
+    } else {
+      U.add(node.id)
+      pathInfo[node.id] = []
     }
+  })
+  for (let child of start.adj) {
+    pathInfo[child.id] = [start.id, child.id]
   }
+
+  function getShortestNode(node) {
+    let min = Infinity
+    let res
+    for (let child of node.adj) {
+      if (U.has(child.id)) {
+        if (child.w < min) {
+          min = child.w
+          res = child
+        }
+      }
+    }
+    return res
+  }
+  function computePath(start) {
+    let adj = getShortestNode(start)
+    if (!adj) return
+    const cur = graph[adj.id]
+    V.add(cur.id)
+    U.delete(cur.id)
+    for (let node of cur.adj) {
+      if (U.has(node.id)) {
+        if (!path[cur.id]) { path[cur.id] = adj.w }
+        if (path[cur.id] + node.w < (path[node.id] || Infinity)) {
+          path[node.id] = path[cur.id] + node.w
+          pathInfo[node.id] = [...pathInfo[cur.id], node.id]
+        }
+      }
+    }
+    computePath(start)
+    computePath(cur)
+  }
+  computePath(start)
+  return pathInfo[end.id]
 }
-
-function traverse(start, end, path = [], set = new Set()) {
-  path.push(start)
-  set.add(start.id)
-  if (start === end) {
-    return path
-  }
-  for (let { id } of start.adj) {
-    if (set.has(id)) {
-      continue
-    }
-    set.add(id)
-    if (traverse(graph[id], end, path, set)) {
-      return path
-    }
-  }
-  path.pop()
-}
-
 function drawPath() {
   const start = Date.now()
   const startBlock = getBlockByCoord([0, 0])
   const endBlock = getBlockByCoord([55, 30])
-  const path = traverse(startBlock, endBlock)
-  console.log('path', path)
+  
+  const path = dijkstra(startBlock, endBlock)
 
   ctx.beginPath()
   ctx.moveTo(0, 0)
-  for (let { x1, x2, y1, y2 } of path) {
+  for (let id of path) {
+    const { x1, x2, y1, y2 } = graph[id]
     const x0 = Math.floor((x1 + x2) / 2)
     const y0 = Math.floor((y1 + y2) / 2 + 0.5)
     ctx.lineTo((x0 + 0.5) * s, (y0 + 0.5) * s)
@@ -742,6 +755,46 @@ function drawPath() {
   console.log(path, Date.now() - start)
 }
 drawPath()
+
+// function traverse(start, end, path = [], set = new Set()) {
+//   path.push(start)
+//   set.add(start.id)
+//   if (start === end) {
+//     return path
+//   }
+//   for (let { id } of start.adj) {
+//     if (set.has(id)) {
+//       continue
+//     }
+//     set.add(id)
+//     if (traverse(graph[id], end, path, set)) {
+//       return path
+//     }
+//   }
+//   path.pop()
+// }
+
+// function drawPath() {
+//   const start = Date.now()
+//   const startBlock = getBlockByCoord([0, 0])
+//   const endBlock = getBlockByCoord([55, 30])
+  
+//   const path = traverse(startBlock, endBlock)
+//   console.log('path', path)
+
+//   ctx.beginPath()
+//   ctx.moveTo(0, 0)
+//   for (let { x1, x2, y1, y2 } of path) {
+//     const x0 = Math.floor((x1 + x2) / 2)
+//     const y0 = Math.floor((y1 + y2) / 2 + 0.5)
+//     ctx.lineTo((x0 + 0.5) * s, (y0 + 0.5) * s)
+//   }
+//   ctx.strokeStyle = '#222'
+//   ctx.stroke()
+
+//   console.log(path, Date.now() - start)
+// }
+// drawPath()
 
 // const g = new Grid({
 //   col: m,

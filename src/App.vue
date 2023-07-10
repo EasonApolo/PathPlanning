@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <canvas id="canvas" width="2000" height="1500"></canvas>
+    <canvas id="canvas" width="2500" height="1500"></canvas>
   </div>
 </template>
 
@@ -31,7 +31,7 @@ export default {
   margin-top: 60px;
 }
 #canvas {
-  width: 1000px;
+  width: 1250px;
   height: 750px;
 }
 </style>
