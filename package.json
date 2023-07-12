@@ -1,46 +1,19 @@
 {
-  "name": "pathfind",
-  "version": "0.1.0",
-  "private": true,
-  "scripts": {
-    "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
+  "name": "pathplanning",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/EasonApolo/PathPlanning.git"
   },
-  "dependencies": {
-    "core-js": "^3.6.5",
-    "fast-astar": "^1.0.6",
-    "vue": "^2.6.11"
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/EasonApolo/PathPlanning/issues"
   },
+  "homepage": "https://github.com/EasonApolo/PathPlanning#readme",
   "devDependencies": {
-    "@vue/cli-plugin-babel": "~4.5.19",
-    "@vue/cli-plugin-eslint": "~4.5.19",
-    "@vue/cli-service": "~4.5.19",
-    "babel-eslint": "^10.1.0",
-    "eslint": "^6.7.2",
-    "eslint-plugin-vue": "^6.2.2",
-    "vue-template-compiler": "^2.6.11"
-  },
-  "eslintConfig": {
-    "root": true,
-    "env": {
-      "node": true
-    },
-    "extends": [
-      "plugin:vue/essential",
-      "eslint:recommended"
-    ],
-    "parserOptions": {
-      "parser": "babel-eslint"
-    },
-    "rules": {
-      "no-unused-vars": 0,
-      "no-debugger": 0
-    }
-  },
-  "browserslist": [
-    "> 1%",
-    "last 2 versions",
-    "not dead"
-  ]
+    "webpack-cli": "^5.1.4"
+  }
 }
