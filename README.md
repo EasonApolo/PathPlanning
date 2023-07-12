@@ -10,15 +10,15 @@ const path = grid.findPath([0, 0], [10, 10])
 
 ### Data description
 
-* 0 represents
+* 0 represents available point
 * \>0 represent obstacles
 * (internal) -1 represents split line
-* (internal) <-1 represents block id
+* (internal) <-1 represent block id
 
 ### Known bugs / behavior
 
 - throw an error when the target is unreachable.
-- include unexpected node when finding path between adjascent blocks.
+- include unexpected node when finding path between adjacentblocks.
 
 ### Method
 
